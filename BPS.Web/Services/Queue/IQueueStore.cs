@@ -1,4 +1,4 @@
-using BPS.Web.Models.Queue;
+using BPS.Contracts.Queue;
 
 namespace BPS.Web.Services.Queue;
 

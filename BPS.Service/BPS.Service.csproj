@@ -36,6 +36,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BPS.Contracts">
+      <HintPath>..\BPS.Contracts\bin\$(Configuration)\net48\BPS.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,13 +64,18 @@
       <DependentUpon>Service1.cs</DependentUpon>
     </Compile>
     <Compile Include="Queue\WorkerClient.cs" />
-    <Compile Include="Queue\WorkerModels.cs" />
     <Compile Include="Queue\WorkerRuntime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <Target Name="BuildSharedContracts" BeforeTargets="Build">
+    <Exec Command="dotnet build &quot;..\BPS.Contracts\BPS.Contracts.csproj&quot; -c $(Configuration) -f net48" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

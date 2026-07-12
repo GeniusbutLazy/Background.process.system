@@ -9,11 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using BPS.Service.Queue;
+using NLog;
 
 namespace BPS.Service
 {
     public partial class Service1 : ServiceBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private CancellationTokenSource _stopToken;
         private Task _workerTask;
 
@@ -34,6 +36,7 @@ namespace BPS.Service
 
         protected override void OnStart(string[] args)
         {
+            Logger.Info("Service starting worker runtime.");
             _stopToken = new CancellationTokenSource();
             var runtime = new WorkerRuntime();
             _workerTask = runtime.RunAsync(_stopToken.Token);
@@ -41,6 +44,7 @@ namespace BPS.Service
 
         protected override void OnStop()
         {
+            Logger.Info("Service stop requested.");
             if (_stopToken != null)
             {
                 _stopToken.Cancel();
@@ -52,9 +56,9 @@ namespace BPS.Service
                 {
                     _workerTask.Wait(TimeSpan.FromSeconds(15));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Service stop must continue even if worker cancellation throws.
+                    Logger.Warn(ex, "Worker task shutdown encountered an error.");
                 }
             }
 
@@ -65,6 +69,7 @@ namespace BPS.Service
             }
 
             _workerTask = null;
+            Logger.Info("Service stopped.");
         }
     }
 }
