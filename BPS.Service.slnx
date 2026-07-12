@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BPS.Service/BPS.Service.csproj" Id="dd10bdcb-a6d7-4a37-86fa-cf59177ad4b2" />
+  <Project Path="BPS.Web/BPS.Web.csproj" />
+</Solution>
