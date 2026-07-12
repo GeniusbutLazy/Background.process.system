@@ -1,4 +1,4 @@
-using BPS.Web.Models.Queue;
+using BPS.Contracts.Queue;
 using BPS.Web.Services.Queue;
 using Microsoft.AspNetCore.Mvc;
 
